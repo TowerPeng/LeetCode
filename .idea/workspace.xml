@@ -4,15 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5af47398-c5c0-497d-8fa1-753079386603" name="Changes" comment="移除链表元素">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/com.tower.leetcode/src/main/java/com/towerpeng/practice/DetectCycle142.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/com.tower.leetcode/src/main/java/com/towerpeng/practice/Intersection349.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/com.tower.leetcode/src/main/java/com/towerpeng/practice/IsAnagram242.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/com.tower.leetcode/src/main/java/com/towerpeng/practice/MyLinkedList707.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/com.tower.leetcode/src/main/java/com/towerpeng/practice/RemoveNthFromEnd19.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/com.tower.leetcode/src/main/java/com/towerpeng/practice/ReverseList206.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/com.tower.leetcode/src/main/java/com/towerpeng/practice/SwapPairs24.java" afterDir="false" />
+    <list default="true" id="5af47398-c5c0-497d-8fa1-753079386603" name="Changes" comment="力扣题目">
+      <change afterPath="$PROJECT_DIR$/com.tower.leetcode/src/main/java/com/towerpeng/practice/FourSum18.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/com.tower.leetcode/src/main/java/com/towerpeng/practice/FourSumCount454.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/com.tower.leetcode/src/main/java/com/towerpeng/practice/ThreeSum15.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/com.tower.leetcode/src/main/java/com/towerpeng/practice/TwoSum1.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,6 +40,7 @@
   "keyToString": {
     "Application.GenerateMatrix59.executor": "Run",
     "Application.MinSubArrayLen209.executor": "Run",
+    "Application.SortedSquares977.executor": "Run",
     "node.js.selected.package.tslint": "(autodetect)",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
@@ -127,13 +124,22 @@
       <option name="project" value="LOCAL" />
       <updated>1769155971627</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="力扣题目">
+      <option name="closed" value="true" />
+      <created>1769161015730</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1769161015730</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="滑动窗口" />
     <MESSAGE value="螺旋矩阵" />
     <MESSAGE value="移除链表元素" />
-    <option name="LAST_COMMIT_MESSAGE" value="移除链表元素" />
+    <MESSAGE value="力扣题目" />
+    <option name="LAST_COMMIT_MESSAGE" value="力扣题目" />
   </component>
 </project>
