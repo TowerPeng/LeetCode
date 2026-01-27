@@ -98,11 +98,15 @@ public class PreorderTraversal144 {
         Stack<TreeNode> stack = new Stack<>();
         stack.push(root);
         while(!stack.isEmpty()){
+            //入栈顺序中右左
+            //中
             TreeNode pop = stack.pop();
             result.add(pop.val);
+            //右
             if(pop.right!=null){
                 stack.push(pop.right);
             }
+            //左
             if(pop.left!=null){
                 stack.push(pop.left);
             }

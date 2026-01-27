@@ -50,14 +50,14 @@ public class MaxDepth559 {
         while (!queue.isEmpty()){
             depth++;
             int queueSize = queue.size();
-            while(queueSize>0){
+            for (int m =0;m<queueSize;m++){
                 Node node = queue.poll();
-                for(int i = 0;i<node.children.size();i++){
-                    if(node.children.get(i)!=null){
-                        queue.offer(node.children.get(i));
+                List<Node> children = node.children;
+                for (Node child : children) {
+                    if (child != null) {
+                        queue.offer(child);
                     }
                 }
-                queueSize--;
             }
         }
         return depth;

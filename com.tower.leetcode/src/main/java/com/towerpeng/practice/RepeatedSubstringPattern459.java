@@ -37,10 +37,12 @@ public class RepeatedSubstringPattern459 {
 
         int n = s.length();
         int [] next = new int [n];
-        //第一个字符没有前缀
-        next[0] = 0;
         int j = 0;
-        for(int i = 1;i<n;i++){
+        for(int i = 0;i<n;i++){
+            if(i==0){
+                //第一个字符没有前缀
+                next[i] = 0;
+            }
             //不相同，则回退j
             while(j>0&& s.charAt(i)!=s.charAt(j)){
                 j = next[j-1];

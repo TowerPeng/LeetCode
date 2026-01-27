@@ -32,11 +32,11 @@ public class GenerateMatrix59 {
         int startX = 0, startY = 0;
         int i,j;
         while(loop<=n/2){
-            //第一行
+            //第一行，固定X，移动Y，行不动，列递增
             for(j = startY;j<n-offset;j++){
                 nums[startX][j] = count++;
             }
-            //最后一列
+            //最后一列，固定Y，移动X，列不动，行递增
             for(i = startX;i<n-offset;i++){
                 nums[i][j] = count++;
             }
@@ -53,6 +53,7 @@ public class GenerateMatrix59 {
             startY++;
             loop++;
         }
+        //奇数的时候，中间位置赋值
         if(n%2==1){
             nums[startX][startY] = count;
         }

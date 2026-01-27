@@ -45,6 +45,7 @@ public class MaxSlidingWindow239 {
         // 遍历nums数组
         for(int i = 0;i < nums.length;i++){
             // 保证从大到小 如果前面数小则需要依次弹出，直至满足要求
+            //队列最后一个元素小于当前元素，则出列
             while(!queue.isEmpty() && nums[queue.peekLast()] <= nums[i]){
                 queue.pollLast();
             }
@@ -55,7 +56,7 @@ public class MaxSlidingWindow239 {
                 queue.poll();
             }
             // 当窗口长度为k时 保存当前窗口中最大值
-            if(i+1 >= k){
+            if(i >= k-1){
                 result[i+1-k] = nums[queue.peek()];
             }
         }
