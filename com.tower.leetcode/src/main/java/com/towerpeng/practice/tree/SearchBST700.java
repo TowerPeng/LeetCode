@@ -61,4 +61,35 @@ public class SearchBST700 {
         return null;
     }
 
+    public TreeNode searchBST2(TreeNode root, int val) {
+        if(root==null){
+            return root;
+        }
+        if(val==root.val){
+            return root;
+        }
+        TreeNode result = null;
+        if(val<root.val){
+            result = searchBST(root.left,val);
+        }
+        if(val>root.val){
+            result = searchBST(root.right,val);
+        }
+        return result;
+
+    }
+
+    public TreeNode searchBST3(TreeNode root, int val){
+        while(root!=null){
+            if(val<root.val){
+                root = root.left;
+            }
+            else if(val>root.val){
+                root = root.right;
+            }
+            else
+                return root;
+        }
+        return null;
+    }
 }

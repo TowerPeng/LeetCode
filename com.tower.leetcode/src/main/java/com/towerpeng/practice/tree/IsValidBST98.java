@@ -1,6 +1,9 @@
 package com.towerpeng.practice.tree;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 /**
  *给你一个二叉树的根节点 root ，判断其是否是一个有效的二叉搜索树。
@@ -39,8 +42,36 @@ public class IsValidBST98 {
         }
     }
 
+    //二叉搜索树中序遍历一定是有序的数组
+    List<Integer> list = new ArrayList<>();
+    public boolean isValidBST2(TreeNode root){
+        if(root==null){
+            return true;
+        }
+        boolean left = isValidBST2(root.left);
+        list.add(root.val);
+        boolean right = isValidBST2(root.right);
+        List<Integer> collect = list.stream().sorted().collect(Collectors.toList());
+        return collect.equals(list);
+    }
 
-    TreeNode max;
+    Long maxValue = Long.MIN_VALUE;
+    public boolean isValidBST3(TreeNode root){
+        if(root==null){
+            return true;
+        }
+        boolean left = isValidBST2(root.left);
+        if(root.val>maxValue){
+            maxValue = (long) root.val;
+        }else{
+            return false;
+        }
+        boolean right = isValidBST2(root.right);
+        return left && right;
+    }
+
+
+    TreeNode pre;
     public boolean isValidBST(TreeNode root) {
         if (root == null) {
             return true;
@@ -51,10 +82,10 @@ public class IsValidBST98 {
             return false;
         }
         // 中
-        if (max != null && root.val <= max.val) {
+        if (pre != null && root.val <= pre.val) {
             return false;
         }
-        max = root;
+        pre = root;
         // 右
         boolean right = isValidBST(root.right);
         return right;
