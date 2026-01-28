@@ -1,4 +1,4 @@
-package com.towerpeng.practice;
+package com.towerpeng.practice.tree;
 
 /**
  *给定一个二叉树，判断它是否是 平衡二叉树

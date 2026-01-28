@@ -1,4 +1,4 @@
-package com.towerpeng.practice;
+package com.towerpeng.practice.tree;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

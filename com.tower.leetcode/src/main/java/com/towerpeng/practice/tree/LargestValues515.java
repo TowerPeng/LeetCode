@@ -1,25 +1,26 @@
-package com.towerpeng.practice;
+package com.towerpeng.practice.tree;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 /**
- * 给定一个二叉树 root ，返回其最大深度。
+ * 给定一棵二叉树的根节点 root ，请找出该二叉树中每一层的最大值。
  *
- * 二叉树的 最大深度 是指从根节点到最远叶子节点的最长路径上的节点数。
  *
- * 示例 1：
  *
- * 输入：root = [3,9,20,null,null,15,7]
- * 输出：3
- * 示例 2：
+ * 示例1：
  *
- * 输入：root = [1,null,2]
- * 输出：2
- * @Author: 彭涛
- * @Date: 2026/1/26 9:42
+ *
+ *
+ * 输入: root = [1,3,2,5,3,null,9]
+ * 输出: [1,3,9]
+ * 示例2：
+ *
+ * 输入: root = [1,2,3]
+ * 输出: [1,3]
+ *
  */
-public class MaxDepth104 {
+public class LargestValues515 {
+
 
     public class TreeNode {
         int val;
@@ -33,18 +34,20 @@ public class MaxDepth104 {
             this.right = right;
         }
     }
+    public List<Integer> largestValues(TreeNode root) {
 
-    public int maxDepth(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
         if(root==null){
-            return 0;
+            return list;
         }
-        int result = 0;
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
         while(!queue.isEmpty()){
-            int queueSize = queue.size();
-            for(int i = 0;i<queueSize;i++){
+            int len = queue.size();
+            List<Integer> tempList = new ArrayList<>();
+            for(int i = 0;i<len;i++){
                 TreeNode poll = queue.poll();
+                tempList.add(poll.val);
                 if(poll.left!=null){
                     queue.offer(poll.left);
                 }
@@ -52,9 +55,9 @@ public class MaxDepth104 {
                     queue.offer(poll.right);
                 }
             }
-            result ++;
+            Integer i = tempList.stream().max(Comparator.comparingInt(Integer::intValue)).get();
+            list.add(i);
         }
-        return result;
+        return list;
     }
-
 }

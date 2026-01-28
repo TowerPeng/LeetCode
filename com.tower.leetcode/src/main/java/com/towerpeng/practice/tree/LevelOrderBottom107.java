@@ -1,32 +1,11 @@
-package com.towerpeng.practice;
+package com.towerpeng.practice.tree;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-/**
- * 给定一个非空二叉树的根节点 root , 以数组的形式返回每一层节点的平均值。与实际答案相差 10-5 以内的答案可以被接受。
- *
- *
- *
- * 示例 1：
- *
- *
- *
- * 输入：root = [3,9,20,null,null,15,7]
- * 输出：[3.00000,14.50000,11.00000]
- * 解释：第 0 层的平均值为 3,第 1 层的平均值为 14.5,第 2 层的平均值为 11 。
- * 因此返回 [3, 14.5, 11] 。
- * 示例 2:
- *
- *
- *
- * 输入：root = [3,9,20,15,7]
- * 输出：[3.00000,14.50000,11.00000]
- *
- */
-public class AverageOfLevels637 {
+public class LevelOrderBottom107 {
 
     public class TreeNode {
         int val;
@@ -41,19 +20,23 @@ public class AverageOfLevels637 {
         }
     }
 
-    public List<Double> averageOfLevels(TreeNode root) {
-        List<Double> result = new ArrayList();
-        Queue<TreeNode> que = new LinkedList<>();
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+
+        LinkedList<List<Integer>> result = new LinkedList<>();
         if(root==null){
             return result;
         }
+        Queue<TreeNode> que = new LinkedList<>();
+        //头结点入列
         que.offer(root);
+        //队列不为空
         while(!que.isEmpty()){
+            List<Integer> itemList = new ArrayList<Integer>();
+            //本层的元素数量
             int len = que.size();
-            Double doubleResult = 0.0;
-            for(int i = 0;i<len;i++){
+            while(len>0){
                 TreeNode tempNode = que.poll();
-                doubleResult+=tempNode.val;
+                itemList.add(tempNode.val);
                 //下一层元素入列
                 if(tempNode.left!=null){
                     que.offer(tempNode.left);
@@ -61,8 +44,10 @@ public class AverageOfLevels637 {
                 if(tempNode.right!=null){
                     que.offer(tempNode.right);
                 }
+                len--;
             }
-            result.add(doubleResult/ len);
+            //与深度遍历不同，需要添加到头，可实现倒序，双向队列，前插
+            result.addFirst(itemList);
         }
         return result;
     }

@@ -1,26 +1,30 @@
-package com.towerpeng.practice;
+package com.towerpeng.practice.tree;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
- * 给定一棵二叉树的根节点 root ，请找出该二叉树中每一层的最大值。
+ *
+ * 给定二叉树的根节点 root ，返回所有左叶子之和。
  *
  *
  *
- * 示例1：
+ * 示例 1：
  *
  *
  *
- * 输入: root = [1,3,2,5,3,null,9]
- * 输出: [1,3,9]
- * 示例2：
+ * 输入: root = [3,9,20,null,null,15,7]
+ * 输出: 24
+ * 解释: 在这个二叉树中，有两个左叶子，分别是 9 和 15，所以返回 24
+ * 示例 2:
  *
- * 输入: root = [1,2,3]
- * 输出: [1,3]
+ * 输入: root = [1]
+ * 输出: 0
  *
+ * @Author: 彭涛
+ * @Date: 2026/1/27 14:54
  */
-public class LargestValues515 {
-
+public class SumOfLeftLeaves404 {
 
     public class TreeNode {
         int val;
@@ -34,30 +38,30 @@ public class LargestValues515 {
             this.right = right;
         }
     }
-    public List<Integer> largestValues(TreeNode root) {
-
-        List<Integer> list = new ArrayList<>();
+    public int sumOfLeftLeaves(TreeNode root) {
+        int result = 0;
         if(root==null){
-            return list;
+            return result;
         }
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
         while(!queue.isEmpty()){
             int len = queue.size();
-            List<Integer> tempList = new ArrayList<>();
-            for(int i = 0;i<len;i++){
+            for(int i =0;i<len;i++){
                 TreeNode poll = queue.poll();
-                tempList.add(poll.val);
                 if(poll.left!=null){
                     queue.offer(poll.left);
+                    //左叶子节点判断
+                    if(poll.left.left==null&&poll.left.right==null){
+                        result+=poll.left.val;
+                    }
                 }
                 if(poll.right!=null){
                     queue.offer(poll.right);
                 }
             }
-            Integer i = tempList.stream().max(Comparator.comparingInt(Integer::intValue)).get();
-            list.add(i);
         }
-        return list;
+        return result;
     }
+
 }
