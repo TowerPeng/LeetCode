@@ -38,9 +38,11 @@ public class TrimBST669 {
         if (root == null) {
             return null;
         }
+        //当前节点小于最小值，向右遍历
         if (root.val < low) {
             return trimBST(root.right, low, high);
         }
+        //当前节点大于最大值，向左遍历
         if (root.val > high) {
             return trimBST(root.left, low, high);
         }

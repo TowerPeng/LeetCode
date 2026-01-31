@@ -1,6 +1,8 @@
 package com.towerpeng.practice.tree;
 
 
+import java.util.ArrayList;
+
 /**
  * 给你一个含重复值的二叉搜索树（BST）的根节点 root ，找出并返回 BST 中的所有 众数（即，出现频率最高的元素）。
  *
@@ -36,15 +38,55 @@ public class FindMode501 {
         }
     }
 
-    int [] result = new int[]{};
+
+    //双指针中序遍历
+    ArrayList<Integer> resList;
+    int maxCount;
+    int count;
+    TreeNode pre;
 
     public int[] findMode(TreeNode root) {
+        resList = new ArrayList<>();
+        maxCount = 0;
+        count = 0;
+        pre = null;
 
+        findMode1(root);
+        int [] rest = new int[]{};
+        for (int i = 0;i<resList.size();i++){
+            rest[i] = resList.get(i);
+        }
+        return rest;
+    }
+
+
+    private void findMode1(TreeNode root){
         if(root==null){
-            return result;
+            return;
+        }
+        //左
+        findMode1(root.left);
+        int rootValue = root.val;
+        //中  单一元素出现的频率统计
+        if(pre==null){
+            count = 1;
+        }else if(pre.val == root.val){
+            count++;
+        }else{
+            count = 1;
         }
 
+        pre = root;
 
+        if(count == maxCount){
+            resList.add(rootValue);
+        }else if(count > maxCount){
+            resList.clear();
+            resList.add(rootValue);
+            maxCount = count;
+        }
+        //右
+        findMode1(root.right);
 
     }
 }

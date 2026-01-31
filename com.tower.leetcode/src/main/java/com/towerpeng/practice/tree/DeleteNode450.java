@@ -48,16 +48,19 @@ public class DeleteNode450 {
     public TreeNode deleteNode(TreeNode root, int key) {
         if (root == null) return root;
         if (root.val == key) {
-            if (root.left == null) {
-                return root.right;
-            } else if (root.right == null) {
+            //画图理解，右叶子节点为空，则赋左节点
+            if(root.right==null){
                 return root.left;
-            } else {
-                TreeNode cur = root.right;
-                while (cur.left != null) {
-                    cur = cur.left;
+                //左叶子节点，则节点赋为右节点
+            }else if(root.left==null){
+                return root.right;
+            }else{
+                //不是叶子节点情况，右子树
+                TreeNode curr = root.right;
+                while(curr.left!=null){
+                    curr = curr.left;
                 }
-                cur.left = root.left;
+                curr.left = root.left;
                 root = root.right;
                 return root;
             }
@@ -66,5 +69,8 @@ public class DeleteNode450 {
         if (root.val < key) root.right = deleteNode(root.right, key);
         return root;
     }
+
+
+
 
 }

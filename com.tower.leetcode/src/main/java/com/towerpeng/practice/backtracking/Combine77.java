@@ -55,4 +55,17 @@ public class Combine77 {
             path.removeLast();
         }
     }
+
+    //剪枝前
+    private void combineHelper2(int n,int k,int startIndex){
+        if(path.size()==k){
+            result.add(new ArrayList(path));
+            return;
+        }
+        for(int i = startIndex;i<=n;i++){
+            path.add(i);
+            combineHelper2(n,k,i+1);
+            path.removeLast();
+        }
+    }
 }
