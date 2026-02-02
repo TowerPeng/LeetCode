@@ -30,7 +30,7 @@ public class MaxSubArray53 {
             return nums[0];
         }
         int count = 0;
-        int sum = Integer.MAX_VALUE;
+        int sum = Integer.MIN_VALUE;
         for (int num : nums) {
             count += num;
             sum = Math.max(sum, count);// 取区间累计的最大值（相当于不断确定最大子序终止位置）
