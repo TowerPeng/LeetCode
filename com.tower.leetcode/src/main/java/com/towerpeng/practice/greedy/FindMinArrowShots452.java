@@ -31,6 +31,7 @@ package com.towerpeng.practice.greedy;
  */
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * 时间复杂度 : O(NlogN)  排序需要 O(NlogN) 的复杂度
@@ -41,9 +42,10 @@ public class FindMinArrowShots452 {
     public int findMinArrowShots(int[][] points) {
         // 根据气球直径的开始坐标从小到大排序
         // 使用Integer内置比较方法，不会溢出
-        Arrays.sort(points, (a, b) -> Integer.compare(a[0], b[0]));
+        Arrays.sort(points, Comparator.comparingInt(a -> a[0]));
         int count = 1;// points 不为空至少需要一支箭
-        for(int i = 1;i<points.length;i++){// 气球i和气球i-1不挨着，注意这里不是>=
+        for(int i = 1;i<points.length;i++){
+            // 气球i和气球i-1不挨着，注意这里不是>=
             if(points[i][0]>points[i-1][1]){
                 count++;// 需要一支箭
             }else{// 气球i和气球i-1挨着
