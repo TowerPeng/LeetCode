@@ -56,10 +56,27 @@ public class IntegerBreak343 {
             // 尝试将i拆分为j和i-j，其中j从1到i-1
             // 优化：由于对称性，j只需要取到i/2
             for (int j = 1; j <= i / 2; j++) {
-                dp[i] = Math.max(dp[i], Math.max(j, dp[j]) * Math.max(i - j, dp[i - j]));
+                //拆分，如果是两个数就是j*(i-j) 如果再拆分就是j*dp[i-j]
+                dp[i] = Math.max(dp[i], Math.max(j*(i-j), j*dp[i-j]));
             }
         }
 
+        return dp[n];
+    }
+
+    public int integerBreakDp2(int n) {
+        if (n == 1) return 1;
+        if (n == 2) return 1;
+        if (n == 3) return 2;
+        int [] dp = new int [n+1];
+        dp[1] = 1;
+        dp[2] = 1;
+        dp[3] = 2;
+        for(int i = 4;i<=n;i++){
+            for(int j=1;j<=i;j++){
+                dp[i] = Math.max(dp[i],Math.max(j*(i-j),j*dp[i-j] ));
+            }
+        }
         return dp[n];
     }
 }
