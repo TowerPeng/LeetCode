@@ -1,4 +1,4 @@
-package com.towerpeng.leetcode.dynamic.bag;
+package com.towerpeng.leetcode.dynamic.profit;
 
 /**
  * 给定一个数组 prices ，它的第 i 个元素 prices[i] 表示一支给定股票第 i 天的价格。
@@ -27,5 +27,20 @@ public class MaxProfit121 {
             maxProfit = Math.max(maxProfit,prices[i]-low);
         }
         return maxProfit;
+    }
+    //二维数组含义，第i天，0持有股票，1不持有
+    public int maxProfit1(int[] prices) {
+        if(prices==null || prices.length==0){
+            return 0;
+        }
+        int n = prices.length;
+        int[][] dp = new int[n][2];
+        dp[0][0] = 0;
+        dp[0][1] = -prices[0];
+        for (int i = 1; i < n; i++) {
+            dp[i][0] = Math.max(dp[i-1][0],dp[i-1][1]+prices[i]);
+            dp[i][1] = Math.max(dp[i-1][1],-prices[i]);
+        }
+        return dp[n-1][1];
     }
 }
