@@ -60,4 +60,30 @@ public class LargestValues515 {
         }
         return list;
     }
+
+    public List<Integer> largestValues2(TreeNode root) {
+        List<Integer> result = new ArrayList();
+        if(root==null){
+            return result;
+        }
+        Queue<TreeNode> que = new LinkedList();
+        que.offer(root);
+        while(!que.isEmpty()){
+            int len = que.size();
+            //特殊判断，每层可能为负数
+            int maxNumber = Integer.MIN_VALUE;
+            for(int i = 0;i<len;i++){
+                TreeNode temp = que.poll();
+                maxNumber = Math.max(temp.val,maxNumber);
+                if(temp.left!=null){
+                    que.offer(temp.left);
+                }
+                if(temp.right!=null){
+                    que.offer(temp.right);
+                }
+            }
+            result.add(maxNumber);
+        }
+        return result;
+    }
 }

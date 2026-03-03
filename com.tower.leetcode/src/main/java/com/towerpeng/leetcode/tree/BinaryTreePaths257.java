@@ -1,6 +1,8 @@
 package com.towerpeng.leetcode.tree;
 
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -39,6 +41,7 @@ public class BinaryTreePaths257 {
 
     List<String> result = new ArrayList<>();
 
+    //前序遍历才能根指向儿子
     public List<String> binaryTreePaths(TreeNode root) {
         deal(root, "");
         return result;
@@ -55,6 +58,34 @@ public class BinaryTreePaths257 {
         String tmp = s + node.val + "->";
         deal(node.left, tmp);
         deal(node.right, tmp);
+    }
+
+
+    public List<String> binaryTreePaths1(TreeNode root) {
+        List<String> result = new ArrayList<>();
+        if(root==null){
+            return result;
+        }
+        Deque<Object> que = new LinkedList<>();
+        que.offer(root);
+        que.offer(root.val + "");
+        while(!que.isEmpty()){
+            String path = (String) que.pollLast();
+            TreeNode node = (TreeNode) que.pollLast();
+            // 若找到叶子节点
+            if (node.left == null && node.right == null) {
+                result.add(path);
+            }
+            if (node.left != null) {
+                que.offer(node.left);
+                que.offer(path + "->" + node.left.val);
+            }
+            if (node.right != null) {
+                que.offer(node.right);
+                que.offer(path + "->" + node.right.val);
+            }
+        }
+        return result;
     }
 
 }

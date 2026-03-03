@@ -47,6 +47,7 @@ public class ConstructMaximumBinaryTree654 {
 
 
 
+    //凡是构造二叉树都是前序遍历
     public TreeNode constructMaximumBinaryTree(int[] nums) {
         return constructMaximumBinaryTree1(nums, 0, nums.length);
     }

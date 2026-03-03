@@ -60,6 +60,8 @@ package com.towerpeng.leetcode.stackqueue;
  *
  */
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Stack;
 
 /**
@@ -69,7 +71,7 @@ import java.util.Stack;
  */
 public class EvalRPN150 {
     public int evalRPN(String[] tokens) {
-        Stack<Integer> stack = new Stack<>();
+        Deque<Integer> stack = new ArrayDeque<>();
         for(int i = 0;i<tokens.length;i++){
             //加法，弹出元素相加
             if("+".equals(tokens[i])){

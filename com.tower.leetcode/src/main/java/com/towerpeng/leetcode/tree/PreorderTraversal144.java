@@ -1,6 +1,8 @@
 package com.towerpeng.leetcode.tree;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.Stack;
 
@@ -90,15 +92,16 @@ public class PreorderTraversal144 {
     }
 
 
+    //迭代
     public List<Integer> preorderTraversal2(TreeNode root) {
         List<Integer> result = new ArrayList<>();
         if (root == null){
             return result;
         }
-        Stack<TreeNode> stack = new Stack<>();
+        Deque<TreeNode> stack = new ArrayDeque<>();
         stack.push(root);
         while(!stack.isEmpty()){
-            //入栈顺序中右左
+            //入栈顺序中右左 先进后出，所以顺序取反
             //中
             TreeNode pop = stack.pop();
             result.add(pop.val);

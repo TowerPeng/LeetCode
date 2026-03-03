@@ -1,5 +1,7 @@
 package com.towerpeng.leetcode.stackqueue;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Stack;
 
 /**
@@ -25,7 +27,7 @@ public class RemoveDuplicates1047 {
     public static String removeDuplicates(String s) {
 
         char[] charArray = s.toCharArray();
-        Stack<Character> stack = new Stack<>();
+        Deque<Character> stack = new ArrayDeque<>();
 
         for(int i =0 ;i <charArray.length;i++){
             char c = charArray[i];
@@ -39,7 +41,13 @@ public class RemoveDuplicates1047 {
         for(Character c : stack){
             str += c;
         }
-        return str;
+        String newStr = "";
+        char[] charArray1 = str.toCharArray();
+        //倒序
+        for(int i = charArray1.length-1;i>=0;i--){
+            newStr += charArray1[i];
+        }
+        return newStr;
     }
 
     public String removeDuplicates2(String s) {

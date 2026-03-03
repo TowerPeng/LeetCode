@@ -38,6 +38,8 @@ public class IsBalanced110 {
         }
     }
 
+    //重要：求高度一定要后序遍历，求深度一定要前序遍历
+
     /**
      * 递归计算平衡二叉树
      * @param root

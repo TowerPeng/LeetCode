@@ -1,5 +1,7 @@
 package com.towerpeng.leetcode.tree;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -60,7 +62,7 @@ public class BuildTree106 {
         // 后序遍历的最后一个元素是整个树的根节点
         TreeNode root = new TreeNode(postorder[postorder.length-1]);
         // 用栈来保存节点，模拟递归过程
-        Stack<TreeNode> stack = new Stack<>();
+        Deque<TreeNode> stack = new ArrayDeque<>();
         stack.push(root);
         // 中序遍历的索引，从最后开始（因为后序遍历是左右根，我们倒着来就是根右左，所以中序也从最后开始）
         int inorderIndex = inorder.length-1;
