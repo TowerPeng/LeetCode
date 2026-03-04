@@ -52,7 +52,7 @@ public class FindMode501 {
         pre = null;
 
         findMode1(root);
-        int [] rest = new int[]{};
+        int [] rest = new int[resList.size()];
         for (int i = 0;i<resList.size();i++){
             rest[i] = resList.get(i);
         }
@@ -75,9 +75,6 @@ public class FindMode501 {
         }else{
             count = 1;
         }
-
-        pre = root;
-
         if(count == maxCount){
             resList.add(rootValue);
         }else if(count > maxCount){
@@ -85,8 +82,8 @@ public class FindMode501 {
             resList.add(rootValue);
             maxCount = count;
         }
+        pre = root;
         //右
         findMode1(root.right);
-
     }
 }

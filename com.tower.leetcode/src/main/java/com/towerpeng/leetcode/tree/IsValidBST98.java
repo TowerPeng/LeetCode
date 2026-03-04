@@ -44,15 +44,39 @@ public class IsValidBST98 {
 
     //二叉搜索树中序遍历一定是有序的数组
     List<Integer> list = new ArrayList<>();
-    public boolean isValidBST2(TreeNode root){
-        if(root==null){
-            return true;
+
+    /**
+     * 错误修复
+     *     public boolean isValidBST(TreeNode root) {
+     *          if(root==null){
+     *             return true;
+     *         }
+     *         boolean left = isValidBST(root.left);
+     *         list.add(root.val);
+     *         boolean right = isValidBST(root.right);
+     *         List<Integer> collect = list.stream().sorted().collect(Collectors.toList());
+     *         return collect.equals(list);
+     *     }
+     *
+     * @param root
+     * @return
+     */
+    public boolean isValidBST2(TreeNode root) {
+        inorderCollect(root);        // 中序遍历收集节点值
+        // 检查列表是否严格递增
+        for (int i = 1; i < list.size(); i++) {
+            if (list.get(i) <= list.get(i-1)) {
+                return false;       // 发现相等或逆序，不是BST
+            }
         }
-        boolean left = isValidBST2(root.left);
-        list.add(root.val);
-        boolean right = isValidBST2(root.right);
-        List<Integer> collect = list.stream().sorted().collect(Collectors.toList());
-        return collect.equals(list);
+        return true;
+    }
+
+    private void inorderCollect(TreeNode node) {
+        if (node == null) return;
+        inorderCollect(node.left);
+        list.add(node.val);
+        inorderCollect(node.right);
     }
 
     Long maxValue = Long.MIN_VALUE;
