@@ -40,10 +40,7 @@ public class WordBreak139 {
                 }
             }
         }
-
         return dp[s.length()];
-
-
     }
 
     public boolean wordBreak1(String s, List<String> wordDict) {
