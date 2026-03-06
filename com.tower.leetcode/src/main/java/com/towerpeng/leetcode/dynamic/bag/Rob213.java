@@ -45,4 +45,44 @@ public class Rob213 {
         }
         return dp[end];
     }
+
+    /**
+     *
+     * @param nums
+     * @return
+     */
+    public int rob2(int[] nums) {
+        int n = nums.length;
+        if(n==1){
+            return nums[0];
+        }else if(n == 2){
+            return Math.max(nums[0],nums[1]);
+        }
+        // 创建二维 DP 数组：dp[i][j] 表示第 i 个房屋在策略 j 下的最大金额
+        // j=0: 不偷第一间房屋的情况；j=1: 偷第一间房屋的情况
+        int [][]dp = new int [n+1][2];
+        dp[0][0] = 0;// 策略 0：不偷第一间，所以第 0 间金额为 0
+        dp[0][1] = nums[0]; // 策略 1：偷第一间，所以第 0 间金额为 nums[0]
+        // 遍历每一间房屋（从第 1 间开始）
+        for(int i = 1;i<n;i++){
+            // 遍历两种策略
+            for(int j=0;j<2;j++){
+                if(i==1){// 处理第 1 间房屋的特殊情况
+                    if(j==0){// 策略 0：不偷第一间
+                        dp[i][j] = nums[1];
+                    }else{ // 可以偷第 1 间
+                        dp[i][j] = nums[0];
+                    }
+                }else if(i==n-1 && j==1){
+                    // 处理最后一间房屋且策略是偷第一间的情况
+                    // 因为首尾相连，偷了第一间就不能偷最后一间
+                    dp[i][j] = dp[i-1][j];
+                }else{
+                    // 状态转移方程：max(不偷当前房屋，偷当前房屋)
+                    dp[i][j] = Math.max(dp[i-1][j],dp[i-2][j] + nums[i]);
+                }
+            }
+        }
+        return Math.max(dp[n-1][0],dp[n-1][1]);
+    }
 }

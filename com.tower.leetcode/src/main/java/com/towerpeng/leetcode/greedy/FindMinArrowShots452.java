@@ -46,9 +46,11 @@ public class FindMinArrowShots452 {
         int count = 1;// points 不为空至少需要一支箭
         for(int i = 1;i<points.length;i++){
             // 气球i和气球i-1不挨着，注意这里不是>=
+            //0是左边界，1是右边界，如果左边界大于上一个气泡的右边界，则需要一支箭
             if(points[i][0]>points[i-1][1]){
                 count++;// 需要一支箭
             }else{// 气球i和气球i-1挨着
+                //跟上个气球比较，更新右边界
                 points[i][1] = Math.min(points[i][1],points[i-1][1]);// 更新重叠气球最小右边界
             }
         }

@@ -31,16 +31,29 @@ package com.towerpeng.leetcode.dynamic;
  */
 public class MinCostClimbingStairs746 {
 
+    //第一步支付费用
     public int minCostClimbingStairs(int[] cost) {
-        if(cost.length == 2){
-            return Math.min(cost[0], cost[1]);
+        if(cost.length==2){
+            return Math.min(cost[0],cost[1]);
         }
-        int[] dp = new int[cost.length];
+        int [] dp = new int[cost.length];
         dp[0] = cost[0];
         dp[1] = cost[1];
         for(int i = 2;i<cost.length;i++){
-            dp[i] = Math.min(dp[i-1],dp[i-2]);
+            dp[i] = Math.min(dp[i-1] + cost[i],dp[i-2] + cost[i]);
         }
         return Math.min(dp[cost.length-1],dp[cost.length-2]);
     }
+
+    //第一步不支付费用
+    public int minCostClimbingStairs2(int[] cost) {
+        int []dp = new int[cost.length+1];
+        dp[0] = 0;
+        dp[1] = 0;
+        for(int i = 2;i<=cost.length;i++){
+            dp[i] = Math.min(dp[i-1] + cost[i-1],dp[i-2] + cost[i-2]);
+        }
+        return dp[cost.length];
+    }
+
 }

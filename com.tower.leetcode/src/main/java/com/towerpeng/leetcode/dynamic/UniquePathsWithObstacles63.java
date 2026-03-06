@@ -25,7 +25,7 @@ public class UniquePathsWithObstacles63 {
         int m = obstacleGrid.length;
         int n = obstacleGrid[0].length;
         int [][]dp = new int[ m][n];
-
+        //1有障碍，0没有障碍
         //如果在起点或终点出现了障碍，直接返回0
         if(obstacleGrid[0][0]==1 || obstacleGrid[m-1][n-1]==1){
             return 0;
