@@ -61,4 +61,56 @@ public class LongestCommonSubsequence1143 {
         }
         return dp[text1.length()][text2.length()];
     }
+
+    public int longestCommonSubsequence3(String text1, String text2) {
+        // 获取两个字符串的长度
+        int n = text1.length(), m = text2.length();
+        // 将字符串转为字符数组，方便索引
+        char[] char1 = text1.toCharArray();
+        char[] char2 = text2.toCharArray();
+        // 创建dp二维数组，大小为 (n+1) x (m+1)，但实际只使用前n行和前m列
+        // dp[i][j] 表示 text1[0..i] 和 text2[0..j] 的最长公共子序列长度
+        int [][]dp = new int[n+1][m+1];
+        // 外层循环遍历 text1 的每个字符
+        for(int i =0;i<n;i++){
+            // 内层循环遍历 text2 的每个字符
+            for(int j = 0;j<m;j++){
+                // 判断当前两个字符是否相等，相等则 same=1，否则 0
+                int same = (char1[i] == char2[j]?1:0);
+                // 处理左上角第一个元素 (0,0)
+                if(i==0 && j==0){
+                    dp[i][j] = same;  // 如果第一个字符相等则为1，否则0
+                }
+                // 处理第一行（i=0, j>0）：text1只有一个字符
+                else if(i==0){
+                    // 如果当前字符相等，或者前面已经出现过相等（即 dp[i][j-1]==1），则此位置为1
+                    if(same==1 || dp[i][j-1]==1){
+                        dp[i][j] = 1;
+                    } else {
+                        dp[i][j] = 0;
+                    }
+                }
+                // 处理第一列（j=0, i>0）：text2只有一个字符
+                else if(j==0){
+                    // 如果当前字符相等，或者上面已经出现过相等（即 dp[i-1][j]==1），则此位置为1
+                    if(same==1 || dp[i-1][j]==1){
+                        dp[i][j] = 1;
+                    } else {
+                        dp[i][j] = 0;
+                    }
+                }
+                // 当 i>0 且 j>0 且当前字符相等时，LCS长度等于左上角值加1
+                else if(same== 1){
+                    dp[i][j] = dp[i-1][j-1] + 1;
+                }
+                // 当 i>0 且 j>0 且当前字符不相等时，取左边和上边的最大值
+                else{
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+        // 返回最后一个位置的值，即整个字符串的LCS长度
+        return dp[n-1][m-1];
+    }
+
 }

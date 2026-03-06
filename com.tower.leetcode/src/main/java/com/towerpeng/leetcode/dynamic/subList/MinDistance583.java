@@ -41,7 +41,7 @@ public class MinDistance583 {
         int len1 = char1.length;
         int len2 = char2.length;
 
-        int dp[][] = new int [len1 + 1][len2 + 1];
+        int[][] dp = new int [len1 + 1][len2 + 1];
 
         for(int i = 1; i <= len1; i++){
             for(int j = 1; j <= len2; j++){
