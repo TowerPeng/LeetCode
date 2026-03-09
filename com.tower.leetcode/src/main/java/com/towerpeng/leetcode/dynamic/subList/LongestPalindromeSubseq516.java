@@ -31,4 +31,41 @@ public class LongestPalindromeSubseq516 {
         }
         return dp[0][len - 1];
     }
+
+    //转换为一个串和它的逆序串的最长公共子序列
+    public int longestPalindromeSubseq1(String s) {
+        return longestConsumeSubseq(s, new StringBuilder(s).reverse().toString());
+    }
+
+    public int longestConsumeSubseq(String t1,String t2){
+        int n = t1.length();
+        int m = t2.length();
+        int same = 0;
+        int[][] dp = new int[n+1][m+1];
+        for(int i = 0;i<n;i++){
+            for(int j= 0;j<m;j++){
+                same = (t1.charAt(i) == t2.charAt(j)?1:0);
+                if(i==0 && j==0){
+                    dp[i][j] = same;
+                }else if(i==0){
+                    if(same==1 || dp[i][j-1]==1){
+                        dp[i][j] = 1;
+                    }else{
+                        dp[i][j] = 0;
+                    }
+                }else if(j==0){
+                    if(same==1 || dp[i-1][j]==1){
+                        dp[i][j] = 1;
+                    }else{
+                        dp[i][j] = 0;
+                    }
+                }else if(same==1){
+                    dp[i][j] = dp[i-1][j-1] + 1;
+                }else{
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+        return dp[n-1][m-1];
+    }
 }
