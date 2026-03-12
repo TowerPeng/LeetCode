@@ -1,0 +1,94 @@
+Spring 是一个企业级java 应用框架，他的作用主要是简化软件的开发以及配置过程，简化项目部署环境；
+Spring的优点：
+1、spring低侵入设计，对业务代码的污染非常低
+2、spring的di机制将对象之间的关系交由框架处理，减少组件的耦合
+3、spring提供了aop技术，支持将一些通用的功能进行集中式管理，从而提供更好的复用
+4、spring对于主流的框架提供了非常好的支持
+
+IOC就是控制反转，指创建对象的控制权转移给spring来进行管理，简单来说，就是应用不用去new对象了，而全部交由spring自动生产
+IOC有三种注入方式：1、构造器注入，2、setter方法注入，3、根据注解注入
+
+Aop面向切面，用于将那些与业务无关，但却对多个对象产生影响的公共行为，抽取并封装成一个可重用的模块，AOP的核心就是动态代理，jdk的动态代理和cglib的动态代理。
+Spring AOP 框架提供了基于代理的 AOP 解决方案，Spring AOP 框架基于动态代理，使用 AOP 代理对象来拦截方法调用，从而实现 AOP 功能。
+
+
+Spring 通过三级缓存（three-level cache）机制来解决循环依赖问题。
+这里主要讨论单例Bean的循环依赖。Spring容器在创建Bean的过程中，使用了三个缓存来存储不同状态的Bean实例，从而允许提前暴露尚未完全初始化的Bean实例，供其他Bean引用。
+
+三级缓存：
+一级缓存（singletonObjects）：存储完全初始化好的Bean。
+二级缓存（earlySingletonObjects）：存储提前暴露的Bean（已经实例化，但尚未填充属性和初始化）。
+三级缓存（singletonFactories）：存储Bean工厂，用于生成提前暴露的Bean（通过ObjectFactory包装）。
+
+解决循环依赖的过程（以A依赖B，B依赖A为例）：
+开始创建A，实例化A（调用构造器），然后将A的ObjectFactory放入三级缓存（此时A尚未填充属性，也未初始化）。
+填充A的属性，发现依赖B，于是尝试获取B。
+开始创建B，实例化B，然后将B的ObjectFactory放入三级缓存。
+填充B的属性，发现依赖A，于是尝试获取A。
+获取A：从一级缓存中未找到，从二级缓存中未找到，从三级缓存中找到A的ObjectFactory，通过它获取到A的早期引用（此时A还未完全初始化），将A放入二级缓存，并从三级缓存移除A的ObjectFactory。
+B获取到A的早期引用，完成B的属性填充，然后初始化B，将B放入一级缓存（同时从二级和三级缓存移除B）。
+A获取到B（此时B已在一级缓存中），完成A的属性填充，然后初始化A，将A放入一级缓存（同时从二级和三级缓存移除A）。
+这样，循环依赖就被解决了。
+
+注意：Spring只能解决单例Bean通过setter注入（或者字段注入）形成的循环依赖，无法解决构造器注入形成的循环依赖。因为构造器注入在实例化时就需要完成注入，而此时Bean还未实例化，无法提前暴露引用。
+
+此外，原型（prototype）作用域的Bean也无法解决循环依赖，因为Spring不会缓存原型Bean，每次都是新建。
+
+SpringBootApplication由三个核心注解组成，@SpringBootConfiguration，@EnableAutoConfiguration以及@ComponentScan
+@SpringBootConfiguration，相当于@Configuration，表示当前类是一个配置类
+@EnableAutoConfiguration，这个注解会负责自动配置类导入，也就是将项目中的自动配置类导入到Spring容器解析
+@ComponentScan，扫描路径为当前在解析的包路径下的所有类
+
+SpringBoot3的自动装配原理：
+1、通过@SpringBootConfiguration引入了@EnableAutoConfiguration（负责启动自动装配功能）
+2、@EnableAutoConfiguration引入了@Import注解，将AutoConfigurationImportSelector加载进来
+3、Spring容器启动时，加载IOC容器时会解析@Import注解
+4、SpringFactoriesLoader加载所有SPI文件，即META-INF/org.springframework.boot.autoconfigure.AutoConfiguration.imports文件（SpringBoot2.X 通过spring.factories文件EnableAutoConfiguration导入）
+5、过滤出所有AutoConfigurationClass类型的类
+6、通过@ConditionalOnProperty配置文件开了开关才加载，@ConditionalOnMissingBean没配bean才注入，@ConditionalOnClass依赖有这个类才加载
+
+Spring事务的传播行为：
+1、REQUIRED：如果当前存在事务，则加入该事务，如果当前不存在事务，则创建事务，这是最常用的，也是默认的，适用于大多数情况
+2、REQUIRES_NEW：无论当前是否存在事务，都创建一个新事务，如果当前存在事务，则把当前事务挂起
+3、SUPPORTS：如果当前存在事务，则加入该事务，如果不存在事务，则以非事务方式执行
+4、NOT_SUPPORTED：以非事务方式执行，如果当前存在事务，则将当前事务挂起
+5、MANDATORY：如果当前存在事务，则加入该事务，如果不存在事务，则抛出异常
+6、NESTED：如果当前存在事务，则在嵌套事务中执行，如果当前没有事务，则创建一个新事务
+7、NEVER：以非事务的方式执行，如果当前存在事务，则抛出异常
+
+Spring的启动流程：
+1、运行main方法：在main方法中，创建了一个SpringApplication的实例，用于引导程序启动，同时SpringApplication注解会根据spring.factories文件加载并注册监听器，ApplicationContextInitializer等扩展接口实现。（SpringBoot3.0加载AutoConfiguration.imports文件 ）
+2、运行run方法：运行SpringApplication的run方法是应用程序的启动入口，SpringBoot启动Spring劲儿创建内置的tomcat
+3、SpringtBoot读取和解析环境变量，配置文件，如application.yml或者properties等，获取应用配置信息
+4、创建ApplicationContext也就是Spring上下文，在这一步会根据应用类型创建ApplicationContext，对于web程序，就是创建ServletWebServerApplicationContext
+5、初始化上下文：SpringBoot会将启动类作为配置类，读取并注册BeanDefinition，这使得Spring容器可以识别应用程序配置
+6、调用refresh，此时，SpringBoot调用refresh方法加载和初始化Spring容器，解析@Import注解加载自动配置类，创建和注册BeanDefinition等
+7、创建内置的Servlet容器，如果应用程序是一个web应用程序会创建内置的servelet容器，例如tomcat，接收http请求
+8、监听器和扩展点，在整个启动过程中，Springboot会调用个这监听器和扩展点，这些组件可以用来对应用程序进行扩展和定制。
+
+简述启动过程：
+1、启动main方法，SpringApplication.run(Application.class, args); 创建SpringApplication实例，并调用run方法启动SpringBoot应用，推断应用类型（是web还是普通应用，判断类路径有没有javax.servlet.Servlet相关类，如果有就是web应用），设置初始化器，监听器，主类
+2、调用run方法，5个关键步骤，
+第一步，准备环境（prepareEnvironment），加载配置文件，系统变量，命令行参数，最终封装成ConfigurableEnvironment，
+第二步，创建ApplicationContext（createApplicationContext），也就是上下文容器
+第三步，准备上下文（prepareContext），将 Environment、Banner 等关联到上下文，并执行已注册的 ApplicationContextInitializer。
+第四步：刷新上下文（refreshContext），调用refresh方法，所有bean完成初始化，事件监听器注册完毕，如果是web项目，还会在这时候启动内置的tomcat，
+解析配置类（如 @SpringBootApplication 中的 @ComponentScan、@Import）
+加载并注册 Bean 定义
+实例化单例 Bean（依赖注入）
+如果是 Web 项目，在此阶段启动内嵌的 Tomcat 等 Web 服务器
+注册事件监听器、发布 ContextRefreshedEvent 等
+第五步，调用commandLineRunner和ApplicationRunner，用于执行应用启动后的自定义逻辑
+第六步，发布ApplicationReadyEvent，标志应用启动完成
+
+SpringBean的加载过程：
+1、加载与解析配置，Spring首先读取配置，将每个@Bean解析成为BeanDefinition对象，BeanDefinition包含了Bean的类名、作用域、依赖、属性、初始化方法等元数据，这些BeanDefinition会被注册到BeanDefinitionRegistry中。
+2、调用BeanFactoryPostProcessor，在Bean实例化之前，Spring会调用说有注册的BeanFactoryPostProcessor对BeanDefinition进行修改。
+3、实例化Bean，当容器需要获取Bean时，开始调用创建过程，对于单例bean，容器会检查缓存中是否存在，若不存在则开始创建
+4、属性填充，实例化完成后，Spring会遍历BeanDefinition中的属性值，通过反射进行赋值，如果引用了其他Bean，则会递归调用getBean获取依赖的Bean，此阶段会处理@Autowired@Resource@Value等注解
+5、Aware接口回调，如果Bean实现了特定的Aware接口，Spring会在此阶段调用对应的Setter方法注入容器相关对象，例如BeanNameAware传入容器的名称、BeanFactoryAware传入当前BeanFactory实例、ApplicationContextAware传入ApplicationContext实例
+6、BeanPostProcessor前置处理，调用所有注册的BeanPostProcessor的postProcessBeforeInitialiaztion方法。
+7、初始化Bean，如果实现了Initialization接口则调用afterPropertiesSet方法，如果配置了自定义的init-method则通过反射执行
+8、BeanPostProcessor后置处理，调用BeanPostProcessor的PostProcessorAfterInitialization方法。
+9、注册销毁方法，如果是单例的，Spring会记录其销毁方法，以便在容器关闭回调。
+10、完成并放入缓存，初始化完成的Bean会放入单例缓存池，singletonObjects，供后续获取。
