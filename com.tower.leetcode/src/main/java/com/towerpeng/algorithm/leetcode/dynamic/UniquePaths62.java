@@ -57,10 +57,5 @@ public class UniquePaths62 {
         return dp[m-1][n-1];
     }
 
-    public int uniquePaths1(int m, int n) {
-        for(int i = 1)
-
-
-    }
 
 }
