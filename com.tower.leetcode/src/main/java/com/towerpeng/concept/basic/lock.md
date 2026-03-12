@@ -1,0 +1,18 @@
+ReentrantLock和Synchronized的区别
+他们都是java中实现线程同步的机制，都具有可重入性和互斥性，主要区别在：
+1、层面不同，ReentrantLock是jdk的api方法，属于juc包下，是基于java代码实现的，Synchronized是java关键字，是内置的语言特性，由jvm负责实现。
+2、用法不同，Synchronized进入同步块加锁，出了同步块释放锁，开发者不用手动释放，ReentrantLock需要手动调用lock加锁，且必须在finally中调用unlock释放锁，否则容易死锁
+3、更多功能，ReentrantLock提供了更多功能，如可中断锁、超时锁、锁降级、锁重入
+4、底层实现，Synchronized底层基于对象头MarkWord和监视器锁实现，jdk1.6以后引入了偏向锁，轻量级锁和锁升级机制，ReentrantLock底层基于AQS和CAS操作实现
+
+锁升级：
+每个java对象都包含一个对象头，其中最核心的就是markWord，设计者通过对象头的两个bit，控制锁的状态。
+01无锁状态
+01+biasFlag=1 偏向锁状态
+00轻量锁状态
+10重量锁状态
+锁升级过程： 单线程下，偏向锁直接执行，没有开销，当其他线程来争抢资源时，升级为轻量级锁，通过cas自旋交替执行，当竞争激烈，自旋失败后，升级为重量级锁，会阻塞线程。
+
+CountDownLatch是java中多线程协作的辅助类，通过计数器实现，计数器的初始值可以设置为等待的线程数量，在调用countDown只会，会减少计数器的值，当减为0时，会唤醒所有等待的线程。
+CyclicBarrier是java中多线程协作工具，它可以让多个线程在一个屏蔽点等待，当所有线程都到达时，会自动唤醒所有线程，继续执行。他与CountDownLatch不同，可以重复使用。
+Semaphore是java中多线程协作工具，它允许多个线程同时访问，但是限制了并发访问的线程数量，当并发数量达到限制时，会阻塞线程。
