@@ -1,4 +1,4 @@
-package com.towerpeng.huawei;
+package com.towerpeng.algorithm.huawei;
 
 import java.util.Arrays;
 

@@ -68,7 +68,7 @@ Spring的启动流程：
 
 简述启动过程：
 1、启动main方法，SpringApplication.run(Application.class, args); 创建SpringApplication实例，并调用run方法启动SpringBoot应用，推断应用类型（是web还是普通应用，判断类路径有没有javax.servlet.Servlet相关类，如果有就是web应用），设置初始化器，监听器，主类
-2、调用run方法，5个关键步骤，
+2、调用run方法，6个关键步骤，
 第一步，准备环境（prepareEnvironment），加载配置文件，系统变量，命令行参数，最终封装成ConfigurableEnvironment，
 第二步，创建ApplicationContext（createApplicationContext），也就是上下文容器
 第三步，准备上下文（prepareContext），将 Environment、Banner 等关联到上下文，并执行已注册的 ApplicationContextInitializer。
