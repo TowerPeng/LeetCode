@@ -92,3 +92,15 @@ SpringBean的加载过程：
 8、BeanPostProcessor后置处理，调用BeanPostProcessor的PostProcessorAfterInitialization方法。
 9、注册销毁方法，如果是单例的，Spring会记录其销毁方法，以便在容器关闭回调。
 10、完成并放入缓存，初始化完成的Bean会放入单例缓存池，singletonObjects，供后续获取。
+
+使用了哪些设计模式
+1、简单工厂：Spring的BeanFactory充当工厂，负责根据配置信息创建bean实例。
+2、工厂方法：FactoryBean接口允许用户自定义Bean的创建逻辑，实现了工厂方法。
+3、单例模式：Spring默认将Bean配置为单例，确保容器只有一个共享实例。
+4、适配器模式：SpringMVC的HandlerAdapter允许不同类型的处理器适配到处理接口。
+5、装饰器模式：Spring的BeanWrapper允许在不修改原始Bean类的情况下添加额外的功能。
+6、代理模式：SpringAOP底层通过动态代理来实现切面功能。
+7、观察者模式：Spring的事件监听，监听Spring发布的事件
+8、策略模式：excludeFilters和includeFilters允许使用策略模式来定义包扫描时的过滤策略。
+9、模板方法：Spring的拓展类，如redisTemplate，JdbcTemplate等
+10、责任链模式：SpringAOP通过责任链模式实现通知调用。
