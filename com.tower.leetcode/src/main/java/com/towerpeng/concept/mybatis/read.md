@@ -1,0 +1,30 @@
+Mybatis的工作原理
+MyBatis是一个优秀的半ORM框架，它是用来简化数据库操作的。传统的，如果没有使用框架，我们可能需要手写大量的JDBC代码，处理很多资源管理和异常处理。Mybatis帮我抽象了一部分。
+1、加载配置并初始化
+读取mybatis-config.xml或者通过java配置类，解析为Configuration对象。
+加载映射文件（Mapper XML文件或注解），将每个Mapper接口的每个方法解析为MapperedStatement对象（包含SQL、参数类型、返回值类型等信息），并注册到Configuration中。
+构建SqlSessionFactory。
+2、打开SqlSession
+应用程序通过SQLSessionFactory打开一个SqlSession默认是DefaultSqlSession。
+SqlSession会从Configuration中获取一个Executor（根据配置决定使用哪一个Executor，如SimpleExecutor、ReuseExecutor、BatchExecutor）
+3、获取Mapper代理
+通过SqlSession的getMapper（class）方法获取Mapper接口的动态代理对象（由MapperProxyFactory创建，基于jdk动态代理）
+代理对象将接口方法的调用转发给SqlSession对应的方法（如SelectOne，insert等）
+4、执行Mapper方法
+当调用代理对象的业务方法时，MapperProxy会拦截调用，根据方法名和参数找到对应的MapperedStatement
+调用SqlSession的对应方法，如select，update等，并将MapperedStatement和参数传入
+5、Executor执行SQL
+SqlSession将请求委托给内部的Executor
+Executor会根据传入的MapperedStatement和参数，生成最终的SQL并处理缓存：
+一级缓存：基于perpetualCache本地HashMap，在同一个SqlSession中生效，默认开启
+二级缓存：基于全局缓存，需要手动开启，跨SqlSession共享
+如果缓存未命中，Executor会调用StatementHandler执行数据库操作
+6、StatementHandler处理JDBC
+StatementHandler首先通过Connection获取Statement或者PreparedStatement
+利用ParameterHandler将用户参数设置到PreparedStatement中，如setIn，setString等。
+执行Statement（executeQuery或executeUpdate）得到ResultSet或者更新技术。
+7、ResultSetHandler处理结果
+对于查询操作，ResultSetHandler将ResultSet中的数据按照MapperedStatement中配置的映射规则（resultMap或自动映射）转换为java对象（如List，单个对象或者Map）
+对于更新操作返回影响的行数
+8、返回结果
+结果通过层层返回给 Mapper 代理，最终回到业务代码。

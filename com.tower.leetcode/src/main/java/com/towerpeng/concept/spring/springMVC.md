@@ -1,0 +1,9 @@
+请求到达DispatcherServlet。
+DispatcherServlet查询HandlerMapping找到对应的Handler（Controller）和拦截器。
+执行拦截器preHandle等方法。
+DispatcherServlet将请求交给HandlerAdapter，由HandlerAdapter调用实际的Controller方法。
+Controller执行业务逻辑，返回ModelAndView。
+HandlerAdapter将ModelAndView返回给DispatcherServlet。
+DispatcherServlet请求ViewResolver解析视图，得到真正的View对象。
+View渲染视图，将模型数据填充到视图中，生成响应。
+将响应返回给客户端。
