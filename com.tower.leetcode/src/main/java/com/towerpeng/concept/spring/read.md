@@ -119,3 +119,18 @@ d、调用BeanPostProcessor.postProcessAfterInitialization方法，如果bean实
 4、销毁
 a、在Spring容器关闭的时候进行调用
 b、调用生命周期回调销毁方法
+
+Spring refresh步骤：
+1、prepareRefresh准备刷新，设置启动时间，激活状态，初始化属性源
+2、obtainFreshBeanFactory获取BeanFactory解析Bean定义，通常是DefaultListableBeanFactory
+3、prepareBeanFactory(beanFactory)配置BeanFactory的类加载器，表达式解析器，注册环境相关单例Bean
+4、postProcessorBeanFactory(beanFactory)允许子类对BeanFactory进行后置处理，注册web相关的Scope
+5、invokeBeanFactoryPostProcessor(beanFactory)执行所有BeanFactoryPostProcessor，包括处理@Configuration类，
+解析@Import，@ComponentScan等，自动配置在此阶段通过@EnableAutoConfiguration的DeferredImportSelector完成加载
+6、registerBeanPostProcessor(beanFactory)注册BeanPostProcessor
+7、initMessageSource()初始化消息源，用于国际化
+8、initApplicationEventMulticaster()初始化事件多播器，用于发布事件
+9、onRefresh()模板方法刷新容器，执行容器的初始化方法，如ServletContextAware、ApplicationContextAware等，内置tomcat启动在这个时候。
+10、registerListeners 注册事件监听器
+11、finishBeanFactoryInitialization(beanFactory)实例化所有非懒加载的单例bean（此时依赖注入完成，调用初始化方法）
+12、finishRefresh完成刷新，发布容器启动完成事件
