@@ -1,9 +1,7 @@
-package com.towerpeng.concept.situation;
+package com.towerpeng.concept.situation.code;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 
 /**
