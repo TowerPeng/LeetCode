@@ -163,3 +163,17 @@ G1（Garbage-First）收集器的设计目标是替代CMS，在实现可预测�
 3. 最终标记（STW）
 4. 筛选回收（STW，但可多线程并行，且通过Region选择控制时间）
 可预测的停顿时间、避免内存碎片、能处理大堆内存（>4GB-6GB）。
+
+标记复制算法（Serial，ParNew，Parallel Scavenge）主要新生代
+将内存分为两块，每次只使用一块，回收时将存活对象复制到另外一块，再清空当前块。
+标记清除算法（CMS Concurrent Mark Sweep）主要老年代
+先标记出需要回收的对象，标记完成后统一回收所有被标记的对象
+标记整理算法（Serial Old，Parallel Old，CMS 配合参数实现）主要老年代
+标记过程与标记清除一样，但后续步骤是让所有存活对象向一端移动，然后直接清理掉端边界以外的内存
+分代收集（G1 Garbage-First）主要新生代+老年代
+综合上述算法，根据不同代的特点使用不同算法
+
+常用搭配：
+Parallel Scavenge + Parallel Old 业务不复杂，并发不高
+Parallel New + CMS 比较关注服务响应速度，采用CMS降低停顿
+G1 不仅满足低停顿，还解决了CMS的浮动垃圾和内存碎片问题
