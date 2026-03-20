@@ -134,3 +134,23 @@ Spring refresh步骤：
 10、registerListeners 注册事件监听器
 11、finishBeanFactoryInitialization(beanFactory)实例化所有非懒加载的单例bean（此时依赖注入完成，调用初始化方法）
 12、finishRefresh完成刷新，发布容器启动完成事件
+
+为什么不推荐使用@Autowired
+因为Spring官方最推荐的依赖注入方式就是构造器注入。
+1、@Autowired可能触发空指针，
+构造函数里面调用@Autowired注入的Bean一定会发生空指针异常
+对象的生命周期，构造方法永远优于依赖注入，构造方法执行完之后，依赖注入才会执行。
+@Autowired
+private SomeService someService;
+private String name;
+public Class(){
+    this.name = someService.getMethodName();
+}
+2、与IOC容器强耦合，单元测试极其痛苦
+用字段注入的类，脱离Spring容器难以测试，无法new，依赖是空的，只能启动整个Spring容器才行。构造器注入，直接new个实例，把mock对象穿进去就完事了，这才是高内聚，低耦合。
+3、字段注入可以掩盖循环依赖的问题
+用构造器注入，如果两个Bean互相依赖，项目在启动时会报BeanCreationException，开发阶段就能发现问题，快速失败
+字段注入，使用了三级缓存设计，循环依赖解决了，但是不是最佳方法。
+4、容易违反单一职责原则
+字段使用太方便，依赖项逐渐增多，可能违反单一职责
+构造器注入不太会有这个问题
