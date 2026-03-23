@@ -43,3 +43,14 @@ final InvocationCallback invocation) throws Throwable {
 
 回滚判断：在 completeTransactionAfterThrowing 中，会根据 rollbackFor / noRollbackFor 规则判断异常是否触发回滚。默认情况下，只有 RuntimeException 和 Error 才会回滚 。
 提交：如果方法正常执行，commitTransactionAfterReturning 会调用事务管理器的 commit 方法，最终执行数据库 commit 操作
+
+
+事务失效的场景：
+1、只认RuntimeException和Error，
+2、try catch处理了异常，不执行事务，
+3、类里this调用事务方法不触发动态代理，
+4、private 方法加@Transcational注解，public才生效
+5、final 方法，static方法加@Transcational注解，CGLIB无法代理，
+6、配置了requires_new 传播属性，新开启事务，
+7、新开线程执行事务，ThreadLocal无法共享
+8、数据库用ISAM引擎，不支持事务
