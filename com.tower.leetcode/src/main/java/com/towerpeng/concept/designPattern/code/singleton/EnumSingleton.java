@@ -1,4 +1,4 @@
-package com.towerpeng.concept.designPattern.singleton;
+package com.towerpeng.concept.designPattern.code.singleton;
 
 /**
  * 枚举单例

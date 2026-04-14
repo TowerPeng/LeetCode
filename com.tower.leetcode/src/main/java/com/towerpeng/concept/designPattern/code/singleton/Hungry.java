@@ -1,4 +1,4 @@
-package com.towerpeng.concept.designPattern.singleton;
+package com.towerpeng.concept.designPattern.code.singleton;
 
 /**
  * 饿汉式 (线程安全，类加载时就初始化）

@@ -22,11 +22,21 @@ package com.towerpeng.algorithm.leetcode.string;
  */
 public class RepeatedSubstringPattern459 {
 
-    public boolean repeatedSubstringPattern(String s) {
+    /**
+     * 重复构成
+     * 如果是循环字符串，双倍字符串去除掉首尾字符，则原字符串重复构成
+     * @param s
+     * @return
+     */
+    public static boolean repeatedSubstringPattern(String s) {
         String ss = s + s;
         return ss.substring(1,ss.length()-1).contains(s);
     }
 
+    public static void main(String[] args) {
+        String ss = "abab";
+        System.out.println(repeatedSubstringPattern(ss));
+    }
     /**
      * n % (n - next[n - 1]) == 0
      * 求取next数组，如果满足以上等式则是重复子串

@@ -33,6 +33,23 @@ redissonHash计数器
 5、原子性问题：
 原子命令+lua脚本，SETNX+SETEX+LUA
 
+Redisson 分布式锁使用 Redis 的 Hash 数据结构来存储信息，其 key 和 value 的设计与前面看到的简单实现有很大不同。
+简单来说，key 是业务锁的名字，而 value 是一个 Hash 结构，里面包含了锁持有者的身份和重入次数。
+组成部分	说明	示例
+key	业务锁的唯一标识，通常是一个字符串，由开发者定义，例如 "order:12345" 或 "user:sign:10086"。	"myLock"
+value (Hash)	一个 Hash 结构，存储两个核心信息：
+- field: 锁持有者的唯一标识，格式为 UUID:threadId。
+- value: 锁的重入次数，是一个整数。	{"UUID:threadId-10": 1}
+
+为了支持可重入性和安全释放，Redisson 使用一个 Hash 结构来存储锁的详细信息。
+field (唯一标识符)：即 UUID:threadId。
+UUID：在创建 RedissonClient 实例时生成，同一应用的不同实例 UUID 也不同，用来区分不同 JVM 进程的客户端。
+threadId：当前尝试获取锁的线程 ID。
+这个组合 UUID:threadId 是 Redisson 识别锁持有者的关键凭证。
+value (重入次数)：一个整数，代表当前线程对这个锁的重入次数。
+首次加锁：field 设置为 UUID:threadId，对应的 value 初始化为 1。
+重入加锁：同一个线程再次获取锁时，Redisson 会执行 HINCRBY 命令，将 value 原子性地 +1
+
 Redis 对过期 key 的处理采用两种策略结合的方式：
 惰性删除 + 定期删除，这是一种在性能和内存之间取得平衡的经典设计。
 惰性删除：当客户端尝试访问一个 key 时，Redis 会先检查它是否已过期。如果过期，Redis 会立即将其删除，然后返回 nil。
@@ -48,3 +65,19 @@ redis持久化机制
 2、AOF持久化，AOF是追加日志持久化方式，它会将redis执行的写命令追加到文件的末尾，当redis重启时，它会重新执行写命令来恢复数据。AOF提供了更可靠的持久化方式，因为他可以保证每个写操作都被记录，并且不发生数据丢失。
 3、混合持久化，混合持久化是介于RDB和AOF之间的一种持久化方式，它会将RDB持久化文件保存在磁盘上，AOF持久化文件保存在内存中，当AOF文件达到一定大小时，会进行RDB持久化，并删除AOF文件。
 实际生产更适合用混合持久化。
+
+
+Redis常用数据结构
+字符串（String）
+哈希(Hash)
+列表（list）
+集合（set）
+有序集合（ZSET）
+
+Redis高级数据结构
+Bitmaps（怎么快速查找，jedis.setbit(key, number, true)  //查找  jedis.getbit(key, number)）
+HyperLogLog
+GEO
+
+redis 实现排行榜就是利用 Sorted Set 的自动排序能力，通过 ZADD、ZINCRBY 更新分数，ZREVRANGE 获取 Top N，
+ZREVRANK 获取排名，配合分页、范围查询等命令即可满足绝大多数排行榜需求。它具有高性能、原子操作、简单易用的特点，是业界标准方案。

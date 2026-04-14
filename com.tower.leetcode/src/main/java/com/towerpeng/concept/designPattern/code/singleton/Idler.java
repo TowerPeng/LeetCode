@@ -1,4 +1,4 @@
-package com.towerpeng.concept.designPattern.singleton;
+package com.towerpeng.concept.designPattern.code.singleton;
 
 /**
  * 懒汉式（线程不安全，需改进）

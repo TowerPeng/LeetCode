@@ -36,8 +36,8 @@ package com.towerpeng.algorithm.leetcode.dynamic;
  * @Date: 2026/3/6 15:18
  */
 public class GetMaximumGenerated1646 {
-
-    public int getMaximumGenerated(int n) {
-
-    }
+//
+//    public int getMaximumGenerated(int n) {
+//
+//    }
 }

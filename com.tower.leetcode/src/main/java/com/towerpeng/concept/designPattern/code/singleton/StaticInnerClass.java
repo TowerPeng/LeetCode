@@ -1,4 +1,4 @@
-package com.towerpeng.concept.designPattern.singleton;
+package com.towerpeng.concept.designPattern.code.singleton;
 
 /**
  * 静态内部类（线程安全，推荐）

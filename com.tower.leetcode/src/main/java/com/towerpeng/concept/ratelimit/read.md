@@ -6,3 +6,29 @@
 3. 计数器算法（Counter）维护某时间窗口内累计请求数（如每秒一次统计），超阈值即拒绝新请求。通常有滑动和固定窗口两种。
 固定窗口：redis+lua脚本，控制请求量，窗口大小固定，如1秒内1000次请求，则每秒100次请求。
 滑动窗口：alibaba+sentinel，滑动窗口将统计时间窗口再细分为多个更小的子窗口（如将1秒分10份，每100ms为一个子窗口），时间轴上可“滑动”地累加最近一段时间内所有子窗口的请求总数。每次请求时动态统计最近N个小窗口的总和，从而减少突刺，提高流控精准度。
+
+固定窗口：
+private final static String lua = 
+"-- 资源唯一标识\n" +
+"local key = KEYS[1]\n" +
+"-- 时间窗口内最大并发数\n" +
+"local max_permits = tonumber(KEYS[2])\n" +
+"-- 窗口的间隔时间\n" +
+"local interval_milliseconds = tonumber(KEYS[3])\n" +
+"-- 获取的并发数\n" +
+"local permits = tonumber(ARGV[1])\n" +
+"\n" +
+"local current_permits = tonumber(redis.call(\"get\", key) or 0)\n" +
+"\n" +
+"-- 如果超过了最大并发数，返回false\n" +
+"if (current_permits + permits > max_permits) then\n" +
+"    return false\n" +
+"else\n" +
+"    -- 增加并发计数\n" +
+"    redis.call(\"incrby\", key, permits)\n" +
+"    -- 如果key中保存的并发计数为0，说明当前是一个新的时间窗口，它的过期时间设置为窗口的过期时间\n" +
+"    if (current_permits == 0) then\n" +
+"        redis.call(\"pexpire\", key, interval_milliseconds)\n" +
+"    end\n" +
+"    return true\n" +
+"end";
